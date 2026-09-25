@@ -1,0 +1,334 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10483b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="南昌算子"><link rel="manifest" href="manifest.webmanifest"><title>南昌麻将 · 一人极速版预览</title><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#173e31;background:#f3f6f1}
+*{box-sizing:border-box}
+body{margin:0;min-width:320px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+header{background:#10483b;color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 20px}
+header>div{max-width:600px;margin:auto}
+header strong{font-size:19px}
+header small{display:block;color:#b9d9c9;margin-top:4px}
+main{max-width:600px;margin:auto;padding:17px 13px 55px}
+.card{background:#fff;border:1px solid #dce8de;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 3px 14px #153d2610}
+.heading{font-size:17px;font-weight:800;margin:0 0 13px}
+.label{font-size:13px;font-weight:750;margin:16px 0 9px}
+.label:first-child{margin-top:0}
+#discardBlock{margin-top:16px}
+.chiprow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.chiprow button{border:1px solid #d3dfd5;border-radius:10px;background:#f8faf7;color:#234c39;padding:10px 2px;min-height:45px;font-weight:750}
+.chiprow button.active{background:#116b4c;color:white;border-color:#116b4c}
+.chiprow button:disabled{opacity:.35}
+.roundFeedback{margin:12px 0 0;text-align:center;color:#116b4c;font-size:14px;font-weight:750}
+.dealerEditorCard{background:#eaf5ec;border-radius:11px;padding:16px 13px;margin-bottom:16px}
+.dealerEditorCard .label:first-child{margin-top:0}
+.dealerEditorCard .primary{margin-top:16px}
+[hidden]{display:none!important}
+.dealerline{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#eaf5ec;border-radius:11px;padding:10px 13px;margin-bottom:16px;font-size:14px}
+.dealerline b{font-size:16px}
+.dealerline button,.textbutton{border:0;background:none;color:#116b4c;font-weight:800;padding:5px;font-size:13px}
+.muted{color:#6e8175;font-size:12px;line-height:1.5}
+.jingrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.jingrow label{text-align:center;color:#53695a;font-size:12px;font-weight:750}
+.jingrow input[data-point]{display:block;margin:6px 0 0;width:100%;height:44px;border:1px solid #d2e0d5;border-radius:9px;background:#f8faf7;text-align:center;color:#126f4d;font-size:19px;font-weight:800}
+.advanced{border-top:1px solid #e4ece5;margin-top:14px;padding-top:10px}
+details summary{cursor:pointer;color:#116b4c;font-weight:750;font-size:13px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+.advanced select{width:100%;height:43px;border:1px solid #cfdfd2;border-radius:9px;padding:0 9px;margin-top:10px;background:#fff}
+.modifier{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:10px}
+.modifier label{min-width:0;white-space:nowrap;text-align:center;border:1px solid #d6e3d8;border-radius:9px;padding:9px 2px;font-size:12px}
+.modifier input{accent-color:#116b4c;margin:0 3px 0 0}
+.modifier [hidden],[hidden]{display:none!important}
+.result{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.score{text-align:center;background:#f3f9f4;border-radius:11px;padding:11px 2px;font-size:12px}
+.score strong{display:block;font-size:20px;margin-top:5px;color:#116b4c}
+.score strong.loss{color:#bc553e}
+.error{background:#fff0e8;color:#a13b2b;border-radius:9px;padding:9px 11px;font-size:13px;margin-bottom:10px}
+.detail{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #e7ede8;padding:8px 1px;font-size:12px}
+.detail:first-child{border:0}
+.primary{background:#116b4c;color:white;border:0;border-radius:11px;padding:14px;width:100%;font-size:15px;font-weight:800;margin-top:12px}
+.primary:disabled{background:#adbdaf}
+.compact{margin-top:10px}
+@media(max-width:360px){.score strong{font-size:17px}
+.card{padding:13px}
+}
+
+.patternQuestion{margin-top:16px}
+.patternQuestion .label{margin-top:0}
+.selectwrap{position:relative}
+.selectwrap select{appearance:none;-webkit-appearance:none;width:100%;height:43px;border:1px solid #cfdfd2;border-radius:9px;background-color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='M3.5 6.5 9 12l5.5-5.5' fill='none' stroke='%2334674c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;background-size:18px 18px;padding:0 36px 0 9px;color:#173e31}
+.sessionBar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 13px}
+.sessionControls{display:flex;align-items:center;gap:6px;min-width:0;font-size:17px;font-weight:800;color:#174737;white-space:nowrap}
+.sessionControls label{display:flex;align-items:center;gap:3px}
+.sessionControls select{appearance:none;-webkit-appearance:none;border:0;border-bottom:1px solid #9bb5a5;border-radius:0;background:transparent;color:#174737;font-size:17px;font-weight:800;padding:4px 16px 4px 4px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%2334674c' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1px center}
+.sessionBar button{flex:none;border:0;background:none;color:#a34c39;font-size:12px;font-weight:700;padding:7px 0 7px 8px}
+@media(max-width:360px){.sessionBar button{font-size:11px}
+}
+.compactChoices{grid-template-columns:repeat(2,minmax(0,1fr))}
+.clearConfirm{background:#fff;border:1px solid #e5c7b4;border-radius:12px;padding:14px;margin:0 0 12px;box-shadow:0 5px 14px #442f2011}
+.clearConfirm strong{font-size:15px}
+.clearConfirm p{font-size:12px;color:#6e8175;margin:6px 0 12px}
+.clearConfirm>div{display:flex;justify-content:flex-end;gap:8px}
+.clearConfirm button{border:1px solid #d7e2d8;background:#fff;border-radius:8px;padding:8px 13px;color:#365b44;font-weight:700}
+.clearConfirm #confirmClear{background:#a84d39;color:white;border-color:#a84d39}
+.jingPlayer{min-width:0}
+.jingPlayer>label:first-child{display:block}
+.gangJing{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:6px;white-space:nowrap;font-size:10px!important;font-weight:500!important}
+.gangJing input{accent-color:#116b4c;width:13px;height:13px;margin:0;flex:none}
+@media(max-width:390px){.gangJing{font-size:9px!important}
+.modifier label{font-size:11px}
+}
+.nameGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.nameGrid label{display:block;font-size:12px;font-weight:700;color:#587364}
+.nameGrid input{display:block;width:100%;height:42px;margin-top:5px;padding:0 9px;border:1px solid #cfdfd2;border-radius:9px;background:#fff;color:#173e31;font-size:15px}
+.chiprow button{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:390px){.nameGrid{gap:7px}
+}
+.jingrow{display:block}
+.jingPlayer{padding:10px 0 12px;border-top:1px solid #e4eee7}
+.jingPlayer:first-child{border-top:0}
+.jingPlayer .pointHeader{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.jingPlayer .pointHeader label{font-size:14px;text-align:left;color:#173e31}
+.pointValue{font-size:20px;color:#116b4c;font-weight:800}
+.jingrow input[type="range"][data-point]{appearance:none;-webkit-appearance:none;display:block;width:100%;height:38px;border:0;background:transparent;margin:7px 0 0;cursor:pointer;touch-action:pan-y;accent-color:#116b4c}
+.jingrow input[type="range"][data-point]::-webkit-slider-runnable-track{height:7px;border-radius:8px;background:#d6e8da}
+.jingrow input[type="range"][data-point]::-moz-range-track{height:7px;border-radius:8px;background:#d6e8da}
+.jingrow input[type="range"][data-point]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:23px;height:23px;margin-top:-8px;border-radius:50%;background:#116b4c;border:3px solid white;box-shadow:0 1px 5px #24524066}
+.jingrow input[type="range"][data-point]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#116b4c;border:3px solid white;box-shadow:0 1px 5px #24524066}
+.pointTicks{display:flex;justify-content:space-between;margin:-3px 11px 0;pointer-events:none}
+.pointTicks i{height:6px;width:1px;background:#aac5af}
+.pointLabels{display:flex;justify-content:space-between;margin:2px 7px 0;color:#718779;font-size:10px}
+.jingPlayer .gangJing{justify-content:flex-start;margin-top:8px;font-size:11px!important}
+</style>
+</head>
+<body>
+<header>
+<div>
+<strong>🀄 南昌麻将算子</strong>
+<small>一人输入 · 即时看得亏</small>
+</div>
+</header>
+<main>
+<div class="sessionBar">
+<div class="sessionControls" id="sessionControls"><label>第 <select id="circleSelect" aria-label="当前圈数"></select> 圈</label><span>·</span><label>第 <select id="roundSelect" aria-label="当前局数"></select> 局</label></div>
+<button type="button" id="clearAll">清空所有记录</button>
+</div>
+<div id="clearConfirm" class="clearConfirm" hidden>
+<strong>开启新一日战局？</strong>
+<p>将重置圈数、局数、庄家和当前输入。</p>
+<div>
+<button type="button" id="cancelClear">取消</button>
+<button type="button" id="confirmClear">确认清空</button>
+</div>
+</div>
+<section class="card">
+<div class="dealerline" id="dealerSummary">
+<span>本局庄家　<b id="dealerText">东家</b>
+</span>
+<button id="editDealer" type="button">设置</button>
+</div>
+<div id="dealerEditor" class="dealerEditorCard" hidden>
+<div class="label">输入东南西北四家的姓名</div>
+<div class="nameGrid" id="playerNames">
+</div>
+<div class="label">选择本局庄家</div>
+<div class="chiprow" id="dealerChoices">
+</div>
+<div class="label">轮庄顺序</div>
+<div class="chiprow compactChoices" id="rotationChoices">
+</div>
+<button type="button" class="primary" id="savePlayerSetup">完成设置</button>
+</div>
+<div class="label">谁胡了</div>
+<div class="chiprow" id="winnerChoices">
+</div>
+<div class="label">怎么胡</div>
+<div class="chiprow" id="methodChoices">
+</div>
+<div id="discardBlock" hidden>
+<div class="label">谁放的炮</div>
+<div class="chiprow" id="discardChoices">
+</div>
+</div>
+<div class="patternQuestion" id="special">
+<div class="label">牌型</div>
+<div id="patternArea">
+<div class="selectwrap" id="patternSelect">
+<select id="pattern" aria-label="牌型">
+<option value="flat">平胡 · 1子</option>
+<option value="small7">小七对 · 2子</option>
+<option value="big7">大七对 · 4子</option>
+<option value="thirteen">十三烂 · 2子</option>
+<option value="star13">七星十三烂 · 4子</option>
+</select>
+</div>
+<div class="modifier">
+<label id="jingWrap">
+<input type="checkbox" id="jing">
+<span id="jingLabel">精吊</span>
+</label>
+<label id="germanWrap">
+<input type="checkbox" id="german">德国</label>
+<label id="gangWrap">
+<input type="checkbox" id="gang">杠开</label>
+<label id="allGermanWrap" hidden>
+<input type="checkbox" id="allGerman">德中德</label>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="heading">各家精分 <span class="muted">默认 0 · 有杠副精可勾选奖励</span>
+</div>
+<div class="jingrow" id="points">
+</div>
+</section>
+<section class="card">
+<div class="heading">本局得亏</div>
+<div class="error" id="error" hidden>
+</div>
+<div class="result" id="scores">
+</div>
+<details class="advanced compact" id="breakdown">
+<summary>展开本局详情</summary>
+<div id="lines">
+</div>
+</details>
+<button class="primary" id="next" disabled>开启下一局</button>
+<p class="roundFeedback" id="roundFeedback" role="status" aria-live="polite" hidden>
+</p>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id),ids=[0,1,2,3],names=['东家','南家','西家','北家'];
+let state={dealer:0,winner:null,method:null,discarder:null,round:1,circle:1,rotationOrder:'counter'};
+const defaultNames=names.slice();
+const sessionKey="nanchangFastSessionV1";
+const dealerSequences={clockwise:[0,1,2,3],counter:[0,3,2,1]};
+$('circleSelect').innerHTML=Array.from({length:20},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+$('roundSelect').innerHTML=Array.from({length:100},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+try{let saved=JSON.parse(localStorage.getItem(sessionKey)||"null");
+if(saved&&Number.isInteger(saved.round)&&saved.round>0&&Number.isInteger(saved.circle)&&saved.circle>0&&ids.includes(saved.dealer)){Object.assign(state,{dealer:saved.dealer,round:saved.round,circle:saved.circle});
+state.rotationOrder=['clockwise','counter'].includes(saved.rotationOrder)?saved.rotationOrder:'counter';
+if(Array.isArray(saved.names)&&saved.names.length===4)saved.names.forEach((v,i)=>{if(typeof v==='string')names[i]=v.trim().slice(0,8)||defaultNames[i]});
+if(saved.ended){state.dealer=0;
+state.circle=Math.max(5,state.circle+1);
+state.round++}}}catch(e){}function saveSession(){try{localStorage.setItem(sessionKey,JSON.stringify({dealer:state.dealer,round:state.round,circle:state.circle,names,rotationOrder:state.rotationOrder}))}catch(e){}}let draftNames=names.slice(),draftDealer=state.dealer,draftRotationOrder=state.rotationOrder;
+$('playerNames').innerHTML=ids.map(i=>`<label>${['东','南','西','北'][i]}方<input data-playername="${i}" maxlength="8" aria-label="${['东','南','西','北'][i]}方姓名"></label>`).join('');
+document.querySelectorAll('[data-playername]').forEach(el=>{el.value=names[+el.dataset.playername];
+el.oninput=()=>{let i=+el.dataset.playername;
+draftNames[i]=el.value.trim().slice(0,8)||defaultNames[i];
+render()}});
+const methods=[['self','自摸'],['discard','放炮'],['heaven','天胡'],['earth','地胡']];
+$('points').innerHTML=ids.map(i=>`<div class="jingPlayer"><div class="pointHeader"><label for="pt${i}">${names[i]}</label><strong class="pointValue" data-point-value="${i}">0 精</strong></div><input id="pt${i}" data-point="${i}" type="range" min="0" max="12" step="1" value="0" aria-label="${names[i]}精分，0到12"><div class="pointTicks" aria-hidden="true">${Array.from({length:13},()=>'<i></i>').join('')}</div><div class="pointLabels" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div><label class="gangJing"><input type="checkbox" data-gangjing="${i}">杠副精 +10</label></div>`).join('');
+function group(id,items,value,onClick){$(id).replaceChildren(...items.map(([v,label,disabled])=>{let b=document.createElement('button');
+b.type='button';
+b.textContent=label;
+b.className=v===value?'active':'';
+ b.disabled=!!disabled;
+b.onclick=()=>onClick(v);
+return b}))}function points(){return ids.map(i=>Number(document.querySelector(`[data-point="${i}"]`).value))}function render(){if(state.method==='heaven')state.winner=state.dealer;
+if(state.method==='earth'&&state.winner===state.dealer)state.winner=null;
+if(state.method==='discard'&&state.discarder===state.winner)state.discarder=null;
+if(!['self','heaven','earth'].includes(state.method))$('jing').checked=false;
+if(!['self','discard'].includes(state.method)){$('pattern').value='flat';
+$('german').checked=false;
+$('allGerman').checked=false;
+$('gang').checked=false}if(!$('german').checked)$('allGerman').checked=false;
+$('allGermanWrap').hidden=!$('german').checked;
+$('jingWrap').hidden=!['self','heaven','earth'].includes(state.method);
+$('jingLabel').textContent=['heaven','earth'].includes(state.method)?'精算天地胡':'精吊';
+$('germanWrap').hidden=['heaven','earth'].includes(state.method);
+$('gangWrap').hidden=state.method!=='self';
+if(state.method!=='self')$('gang').checked=false;
+$('patternSelect').hidden=['heaven','earth'].includes(state.method);
+$('special').hidden=false;
+$('discardBlock').hidden=state.method!=='discard';
+$('dealerText').textContent=names[state.dealer];
+document.querySelectorAll('.jingPlayer').forEach((el,i)=>{el.querySelector('label').textContent=names[i];
+el.querySelector('[data-point]').setAttribute('aria-label',names[i]+'精分，0到12');
+el.querySelector('[data-point-value]').textContent=el.querySelector('[data-point]').value+' 精'});
+group('dealerChoices',ids.map(i=>[i,draftNames[i]]),draftDealer,v=>{draftDealer=v;
+render()});
+group('rotationChoices',[['clockwise','顺时针'],['counter','逆时针']],draftRotationOrder,v=>{draftRotationOrder=v;
+render()});
+group('winnerChoices',ids.map(i=>[i,names[i],state.method==='heaven'&&i!==state.dealer||state.method==='earth'&&i===state.dealer]),state.winner,v=>{state.winner=v;
+render()});
+group('methodChoices',methods,state.method,v=>{state.method=v;
+render()});
+group('discardChoices',ids.map(i=>[i,names[i],i===state.winner]),state.discarder,v=>{state.discarder=v;
+render()});
+let r=calculate();
+$('error').hidden=!r.error;
+$('error').textContent=r.error||'';
+$('scores').replaceChildren(...ids.map(i=>{let box=document.createElement('div'),title=document.createElement('span'),value=document.createElement('strong');
+box.className='score';
+title.textContent=names[i];
+value.className=r.net?.[i]<0?'loss':'';
+value.textContent=r.net?(r.net[i]>0?'+':'')+r.net[i]:'—';
+box.append(title,value);
+return box}));
+$('lines').replaceChildren(...(r.lines||[]).map(line=>{let e=document.createElement('div');
+e.className='detail';
+e.textContent=`${names[line.from]} → ${names[line.to]} · ${line.why}　${line.n}子`;
+return e}));
+$('next').disabled=!r.net;
+$('circleSelect').value=String(state.circle);
+$('roundSelect').value=String(state.round)}
+function computeRound(o){const {dealer,winner,method,discarder,pattern,jing,german,all,gang,ps,gangJing}=o;if(winner===null||!method||method==='discard'&&discarder===null)return{error:'',net:null,lines:[]};if(ps.some(v=>!Number.isInteger(v)||v<0||v>12))return{error:'精分请输入 0–12 的整数',net:null,lines:[]};const base={flat:1,small7:2,thirteen:2,big7:4,star13:4}[pattern]||1,net=[0,0,0,0],lines=[];function pay(from,to,n,why){net[from]-=n;net[to]+=n;lines.push({from,to,n,why})}for(const i of ids){if(i===winner)continue;let n;if(method==='heaven'||method==='earth')n=jing?45:20;else{const payer=method==='discard'&&i===discarder;n=base*(i===dealer||winner===dealer?2:1)*(method==='self'?2:1)*(payer?2:1)*(jing?2:1)*(german?2:1)*(gang?2:1)*(pattern==='small7'&&german?2:1)*(german&&all?2:1);if(jing||german&&(method==='self'||payer))n+=5}pay(i,winner,n,'胡牌')}const holders=ids.filter(i=>ps[i]>0||gangJing[i]);for(const i of ids){let v=ps[i],mult=v>=5?v-3:1,over=holders.length===1&&holders[0]===i?2:1,n=(v*mult+(gangJing[i]?10:0))*over;if(n)for(const j of ids)if(i!==j)pay(j,i,n,'精分'+(mult>1?' · 冲关':'')+(gangJing[i]?' · 杠副精奖励':'')+(over>1?' · 霸王精':''))}return{net,lines,error:''}}function calculate(){return computeRound({dealer:state.dealer,winner:state.winner,method:state.method,discarder:state.discarder,pattern:$('pattern').value,jing:$('jing').checked,german:$('german').checked,all:$('allGerman').checked,gang:$('gang').checked,ps:points(),gangJing:ids.map(i=>document.querySelector(`[data-gangjing="${i}"]`).checked)})}
+$('clearAll').onclick=()=>{$('clearConfirm').hidden=!$('clearConfirm').hidden};
+$('cancelClear').onclick=()=>{$('clearConfirm').hidden=true};
+$('circleSelect').onchange=()=>{state.circle=Number($('circleSelect').value);saveSession();render()};
+$('roundSelect').onchange=()=>{state.round=Number($('roundSelect').value);saveSession();render()};
+$('confirmClear').onclick=()=>{$('clearConfirm').hidden=true;
+$('roundFeedback').hidden=true;
+try{localStorage.removeItem(sessionKey)}catch(e){}Object.assign(state,{dealer:0,winner:null,method:null,discarder:null,round:1,circle:1});
+for(const el of document.querySelectorAll('[data-point]'))el.value='0';
+$('pattern').value='flat';
+for(const el of document.querySelectorAll('[data-gangjing]'))el.checked=false;
+for(const id of ['jing','german','gang','allGerman'])$(id).checked=false;
+$('breakdown').open=false;
+$('dealerEditor').hidden=true;
+saveSession();
+render();
+window.scrollTo({top:0,behavior:'smooth'})};
+$('editDealer').onclick=()=>{draftNames=names.slice();
+draftDealer=state.dealer;
+draftRotationOrder=state.rotationOrder;
+document.querySelectorAll('[data-playername]').forEach(el=>el.value=names[+el.dataset.playername]);
+$('dealerSummary').hidden=true;
+$('dealerEditor').hidden=false;
+render()};
+$('savePlayerSetup').onclick=()=>{names.splice(0,names.length,...draftNames);
+state.dealer=draftDealer;
+state.rotationOrder=draftRotationOrder;
+saveSession();
+$('dealerEditor').hidden=true;
+$('dealerSummary').hidden=false;
+render()};
+for(const el of document.querySelectorAll('[data-point],[data-gangjing],#pattern,#jing,#german,#gang,#allGerman'))el.addEventListener('input',render);
+$('next').onclick=()=>{const r=calculate();
+if(!r.net)return;
+let transition=advanceRound(state.dealer,state.winner,state.circle,state.rotationOrder);
+state.dealer=transition.dealer;
+state.circle=transition.circle;
+state.round++;
+state.winner=null;
+state.method=null;
+state.discarder=null;
+for(const el of document.querySelectorAll('[data-point]'))el.value='0';
+$('pattern').value='flat';
+for(const el of document.querySelectorAll('[data-gangjing]'))el.checked=false;
+for(const id of ['jing','german','gang','allGerman'])$(id).checked=false;
+$('breakdown').open=false;
+$('dealerEditor').hidden=true;
+$('dealerSummary').hidden=false;
+saveSession();
+render();
+$('roundFeedback').textContent=`已进入第 ${state.circle} 圈 · 第 ${state.round} 局，${names[state.dealer]}坐庄`;
+$('roundFeedback').hidden=false;
+$('sessionControls').scrollIntoView({block:'start',behavior:'smooth'})};
+function advanceRound(dealer,winner,circle,rotationOrder){if(winner===dealer)return{dealer,circle};const sequence=dealerSequences[rotationOrder]||dealerSequences.counter;const index=sequence.indexOf(dealer);const next=sequence[(index+1)%sequence.length];return{dealer:next,circle:circle+(index===sequence.length-1?1:0)}}render();
+saveSession();
+
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});</script></body></html>
