@@ -1,4 +1,4 @@
-const CACHE='nc-mahjong-v20';
+const CACHE='nc-mahjong-v22';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>{self.skipWaiting();
 e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
